@@ -1,0 +1,18 @@
+1) Eclipse create project-- spark context,spark session initialization
+2) Read raw data avro after adding databricks jar
+3) Read data from webapi -- https://randomuser.me/api/0.8/?results=100
+4) Flatten the data completely and ignore these columns FAVS,HETU,INSEE,TFN,NINO,SSN,BSN,PPS --- Dont select during you flatten
+5) Remove numericals from the username column
+6) Do left broadcast join between (avro dataframe and numericals removed webapi dataframe) --- left table should avro dataframe
+
+avrodf.join(broadcast(webapidf), Seq("username"),"left")
+
+7) Create two dataframes from Joined dataframe
+              7a) Nationality is null ---not available customers
+              7b) Nationality is not null ---- available customers
+  		
+8) Take Not available customer dataframe ---- find a way to replace 
+                          all string column nulls with  "Not available"
+                          all non string columns nulls with 0
+9) Take available customer dataframe and take null handled not available customer dataframe
+add one column at the last with current_date with today's date
